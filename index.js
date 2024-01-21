@@ -12,7 +12,7 @@ const getPublicationID = async (blogDomain) => {
     body: JSON.stringify({
       query: `
         query Publication {
-            publication(host: ${blogDomain}) {
+            publication(host: "${blogDomain}") {
                 id
             }
         }
