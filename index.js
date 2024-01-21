@@ -116,7 +116,7 @@ try {
       const geminiAPIKey = process.env.GEMINI_API_KEY;
       const prompt = "Write a story about a magic backpack";
 
-      const content = getPublicationID(prompt, geminiAPIKey);
+      const content = getSummary(prompt, geminiAPIKey);
 
       const inputData = {
         input: {
