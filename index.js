@@ -107,7 +107,7 @@ try {
   let diffData = "";
 
   getDiffData(payload)
-    .then((result) => {
+    .then(async (result) => {
       const jsonString = JSON.stringify(result, null, 2);
 
       diffData = jsonString;
@@ -116,7 +116,7 @@ try {
       const geminiAPIKey = process.env.GEMINI_API_KEY;
       const prompt = "Write a story about a magic backpack";
 
-      const content = getSummary(prompt, geminiAPIKey);
+      const content = await getSummary(prompt, geminiAPIKey);
 
       const inputData = {
         input: {
