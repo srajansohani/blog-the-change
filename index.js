@@ -104,6 +104,7 @@ try {
       tags: [],
     },
   };
+  
   console.log(`Blog input data ${inputData}`);
 
   const accessToken = process.env.HASHNODE_ACCESS_TOKEN;
