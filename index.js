@@ -69,14 +69,12 @@ try {
   const blogDomain = core.getInput("blog-domain");
   console.log(`Given blog domain ${blogDomain}!`);
 
-  const payload = JSON.stringify(github.context.payload, undefined, 2);
-  console.log(`The event payload: ${payload}`);
+  const payload = github.context.payload;
 
   const inputData = {
     input: {
-      title: `${github.context.payload.commits[0].message} in ${github.context.payload.repository.full_name}`,
-      //   contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name}`,
-      contentMarkdown: `test blog using github actions`,
+      title: `${payload.commits[0].message} in ${payload.repository.full_name} (${payload.commits[0].id})`,
+      contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name}`,
       tags: [],
     },
   };
