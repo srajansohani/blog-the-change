@@ -22,7 +22,7 @@ const getDiffData = async(payload)=>{
     head: commitSha,
   });
 
-  return commitDiff;
+  return commitDiff.data.files[0].patch;
 }
 
 const getPublicationID = async (blogDomain) => {
@@ -94,8 +94,15 @@ try {
   console.log(`Given blog domain ${blogDomain}!`);
 
   const payload = github.context.payload;
-  const commitDiff = getDiffData(payload);
-  const diffData =  JSON.stringify(commitDiff.data.files[0].patch);
+  let diffData = ""
+  getDiffData(payload).then((result)=>{
+    const jsonString = JSON.stringify(result, null, 2);
+    diffData = jsonString;
+    console.log(jsonString);
+  }).catch((error) => {
+    console.error('Error:', error);
+  });
+
 
   const inputData = {
     input: {
