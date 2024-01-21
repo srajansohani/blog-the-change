@@ -74,8 +74,10 @@ try {
 
   const inputData = {
     input: {
-      title: `${payload.commits[0].message} in ${payload.repository.full_name}`,
-      contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name}`,
+      //   title: `${payload.commits[0].message} in ${payload.repository.full_name}`,
+      title: `test blog via github actions`,
+      //   contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name}`,
+      contentMarkdown: `test blog using github actions`,
       tags: [],
     },
   };
