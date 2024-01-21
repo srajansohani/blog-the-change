@@ -30,7 +30,7 @@ const postBlog = async (blogDomain, inputData, accessToken) => {
     const publicationID = await getPublicationID(blogDomain);
     console.log(`Publication id ${publicationID}`);
 
-    inputData.publicationId = publicationID;
+    inputData.input.publicationId = publicationID;
 
     console.log(`input data with publication ID ${inputData}`);
     let response = await fetch("https://gql.hashnode.com/", {
@@ -74,8 +74,7 @@ try {
 
   const inputData = {
     input: {
-      //   title: `${payload.commits[0].message} in ${payload.repository.full_name}`,
-      title: `test blog via github actions`,
+      title: `${payload.commits[0].message} in ${payload.repository.full_name}`,
       //   contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name}`,
       contentMarkdown: `test blog using github actions`,
       tags: [],
