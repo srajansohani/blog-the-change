@@ -25,7 +25,7 @@ const getPublicationID = async (blogDomain) => {
   return responseData.data.publication.id;
 };
 
-const postBlog = async (inputData, accessToken) => {
+const postBlog = async (blogDomain, inputData, accessToken) => {
   try {
     const publicationID = await getPublicationID(blogDomain);
     console.log(`Publication id ${publicationID}`);
@@ -86,7 +86,7 @@ try {
   const accessToken = process.env.HASHNODE_ACCESS_TOKEN;
   console.log(`Hashnode access token ${accessToken}`);
 
-  postBlog(inputData, accessToken);
+  postBlog(blogDomain, inputData, accessToken);
 } catch (error) {
   core.setFailed(error.message);
 }
