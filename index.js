@@ -30,7 +30,7 @@ const postBlog = async (blogDomain, inputData, accessToken) => {
     const publicationID = await getPublicationID(blogDomain);
     console.log(`Publication id ${publicationID}`);
 
-    inputData.publication = publicationID;
+    inputData.publicationId = publicationID;
 
     console.log(`input data with publication ID ${inputData}`);
     let response = await fetch("https://gql.hashnode.com/", {
