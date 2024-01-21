@@ -1,6 +1,30 @@
 import core from "@actions/core";
 import github from "@actions/github";
+import { octokit } from "./octokit";
 
+
+
+const getDiffData = async(payload)=>{
+  const repository = payload.repository;
+  const owner = repository.owner.login;
+  const repo = repository.name;
+  const commitSha = payload.after;
+  const commit = await octokit.repos.getCommit({
+    owner,
+    repo,
+    ref: commitSha,
+  });
+  const parentCommitSha = commit.data.parents[0].sha;
+  const commitDiff = await octokit.repos.compareCommits({
+    owner,
+    repo,
+    base: parentCommitSha,
+    head: commitSha,
+  });
+
+  console.log(commitDiff.data.files[0].patch);
+  return commitDiff.data.files[0].patch;
+}
 const getPublicationID = async (blogDomain) => {
   let response = await fetch("https://gql.hashnode.com/", {
     method: "POST",
@@ -71,10 +95,12 @@ try {
 
   const payload = github.context.payload;
 
+  const diffData = getDiffData(payload);
+
   const inputData = {
     input: {
       title: `${payload.commits[0].message} in ${payload.repository.full_name} (${payload.commits[0].id})`,
-      contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name}`,
+      contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name} \n the difference of code is \n ${diffData}`,
       tags: [],
     },
   };
