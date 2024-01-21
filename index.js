@@ -27,7 +27,12 @@ const getPublicationID = async (blogDomain) => {
 
 const postBlog = async (inputData, accessToken) => {
   try {
-    console.log(inputData);
+    const publicationID = await getPublicationID(blogDomain);
+    console.log(`Publication id ${publicationID}`);
+
+    inputData.publication = publicationID;
+
+    console.log(`input data with publication ID ${inputData}`);
     let response = await fetch("https://gql.hashnode.com/", {
       method: "POST",
 
@@ -64,16 +69,12 @@ try {
   const blogDomain = core.getInput("blog-domain");
   console.log(`Given blog domain ${blogDomain}!`);
 
-  const publicationID = getPublicationID(blogDomain);
-  console.log(`Publication id ${publicationID}`);
-
   const payload = JSON.stringify(github.context.payload, undefined, 2);
   console.log(`The event payload: ${payload}`);
 
   const inputData = {
     input: {
       title: `${payload.commits[0].message} in ${payload.repository.full_name}`,
-      publicationId: publicationID,
       contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name}`,
       tags: [],
     },
