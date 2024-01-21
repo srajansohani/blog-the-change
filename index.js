@@ -99,25 +99,23 @@ try {
     const jsonString = JSON.stringify(result, null, 2);
     diffData = jsonString;
     console.log(jsonString);
+    const inputData = {
+      input: {
+        title: `${payload.commits[0].message} in ${payload.repository.full_name} (${payload.commits[0].id})`,
+        contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name} \n the difference of code is \n ${diffData}`,
+        tags: [],
+      },
+    };
+  
+    console.log(`Blog input data ${inputData}`);
+  
+    const accessToken = process.env.HASHNODE_ACCESS_TOKEN;
+    console.log(`Hashnode access token ${accessToken}`);
+  
+    postBlog(blogDomain, inputData, accessToken);
   }).catch((error) => {
     console.error('Error:', error);
   });
-
-
-  const inputData = {
-    input: {
-      title: `${payload.commits[0].message} in ${payload.repository.full_name} (${payload.commits[0].id})`,
-      contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name} \n the difference of code is \n ${diffData}`,
-      tags: [],
-    },
-  };
-
-  console.log(`Blog input data ${inputData}`);
-
-  const accessToken = process.env.HASHNODE_ACCESS_TOKEN;
-  console.log(`Hashnode access token ${accessToken}`);
-
-  postBlog(blogDomain, inputData, accessToken);
 } catch (error) {
   core.setFailed(error.message);
 }
