@@ -1,6 +1,6 @@
 import core from "@actions/core";
 import github from "@actions/github";
-import { octokit } from "./octokit";
+import { octokit } from "./octokit.js";
 
 
 
@@ -104,7 +104,7 @@ try {
       tags: [],
     },
   };
-  
+
   console.log(`Blog input data ${inputData}`);
 
   const accessToken = process.env.HASHNODE_ACCESS_TOKEN;
