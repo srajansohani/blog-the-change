@@ -22,13 +22,9 @@ const getDiffData = async(payload)=>{
     head: commitSha,
   });
 
-  console.log(commitDiff.data.files[0].patch);
-  return commitDiff.data.files[0].patch;
+  return commitDiff;
 }
-const returnDiffData = async(payload)=>{
-    const diffData = await getDiffData(payload);
-    return diffData;
-}
+
 const getPublicationID = async (blogDomain) => {
   let response = await fetch("https://gql.hashnode.com/", {
     method: "POST",
@@ -98,8 +94,8 @@ try {
   console.log(`Given blog domain ${blogDomain}!`);
 
   const payload = github.context.payload;
-
-  const diffData = returnDiffData(payload);
+  const commitDiff = getDiffData(payload);
+  const diffData =  JSON.stringify(commitDiff.data.files[0].patch);
 
   const inputData = {
     input: {
