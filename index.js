@@ -21,6 +21,7 @@ const getPublicationID = async (blogDomain) => {
   });
 
   let responseData = await response.json();
+  console.log(responseData);
   return responseData.data.publication.id;
 };
 
