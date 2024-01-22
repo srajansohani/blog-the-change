@@ -16,16 +16,24 @@ try {
 
   console.log("initail URL ", coverImageURL);
 
+  let photographer = "";
+
   if (!coverImageURL) {
     unsplash.search
-      .getPhotos({ query: "Desk", perPage: 1, orientation: "landscape" })
+      .getPhotos({
+        query: "Desk laptop",
+        perPage: 20,
+        orientation: "landscape",
+      })
       .then((result) => {
         if (result.errors) {
           console.log("error occurred: ", result.errors[0]);
         } else {
           const photo = result.response;
-          console.log("img URL ", photo.results[0].urls.full);
-          coverImageURL = photo.results[0].urls.full;
+          const rnd = Math.floor(Math.random() * 19);
+          console.log("img URL ", photo.results[rnd].urls.full);
+          coverImageURL = photo.results[rnd].urls.full;
+          photographer = `${photo.results[rnd].user.first_name} ${photo.results[rnd].user.last_name}`;
         }
       });
   }
@@ -42,6 +50,15 @@ try {
           },
         },
       };
+
+      if (photographer.length) {
+        inputData.input.coverImageOptions = {
+          coverImageURL,
+          isCoverAttributionHidden: false,
+          coverImagePhotographer: photographer,
+          coverImageAttribution: `Image was posted by ${photographer} on Unsplash`,
+        };
+      }
 
       publishBlog(blogDomain, inputData, seriesSlug);
     })
