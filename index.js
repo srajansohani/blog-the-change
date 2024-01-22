@@ -1,10 +1,9 @@
 import core from "@actions/core";
 import github from "@actions/github";
 import { octokit } from "./octokit.js";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-
-
-const getDiffData = async(payload)=>{
+const getDiffData = async (payload) => {
   const repository = payload.repository;
   const owner = repository.owner.login;
   const repo = repository.name;
@@ -23,7 +22,7 @@ const getDiffData = async(payload)=>{
   });
 
   return commitDiff.data.files[0].patch;
-}
+};
 
 const getPublicationID = async (blogDomain) => {
   let response = await fetch("https://gql.hashnode.com/", {
@@ -89,33 +88,54 @@ const postBlog = async (blogDomain, inputData, accessToken) => {
   }
 };
 
+const getSummary = async (prompt, geminiAPIKey) => {
+  const genAI = new GoogleGenerativeAI(geminiAPIKey);
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  const text = response.text();
+  console.log(`Summary generated ${text}`);
+  return text;
+};
+
 try {
   const blogDomain = core.getInput("blog-domain");
   console.log(`Given blog domain ${blogDomain}!`);
 
   const payload = github.context.payload;
-  let diffData = ""
-  getDiffData(payload).then((result)=>{
-    const jsonString = JSON.stringify(result, null, 2);
-    diffData = jsonString;
-    console.log(jsonString);
-    const inputData = {
-      input: {
-        title: `${payload.commits[0].message} in ${payload.repository.full_name} (${payload.commits[0].id})`,
-        contentMarkdown: `commit URL ${payload.commits[0].url} \n by ${payload.commits[0].author.name} \n the difference of code is \n ${diffData}`,
-        tags: [],
-      },
-    };
-  
-    console.log(`Blog input data ${inputData}`);
-  
-    const accessToken = process.env.HASHNODE_ACCESS_TOKEN;
-    console.log(`Hashnode access token ${accessToken}`);
-  
-    postBlog(blogDomain, inputData, accessToken);
-  }).catch((error) => {
-    console.error('Error:', error);
-  });
+  let diffData = "";
+
+  getDiffData(payload)
+    .then(async (result) => {
+      const jsonString = JSON.stringify(result, null, 2);
+
+      diffData = jsonString;
+      console.log(jsonString);
+
+      const geminiAPIKey = process.env.GEMINI_API_KEY;
+      const prompt = "Write a story about a magic backpack";
+
+      const content = await getSummary(prompt, geminiAPIKey);
+
+      const inputData = {
+        input: {
+          title: `${payload.commits[0].message} in ${payload.repository.full_name} (${payload.commits[0].id})`,
+          contentMarkdown: `${content}`,
+          tags: [],
+        },
+      };
+
+      console.log(`Blog input data ${inputData}`);
+
+      const accessToken = process.env.HASHNODE_ACCESS_TOKEN;
+      console.log(`Hashnode access token ${accessToken}`);
+
+      postBlog(blogDomain, inputData, accessToken);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 } catch (error) {
   core.setFailed(error.message);
 }
