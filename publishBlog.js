@@ -27,12 +27,44 @@ const getPublicationID = async (blogDomain) => {
   }
 };
 
-const getSerieseID = async () => {};
+const getSerieseID = async (blogDomain, seriesSlug) => {
+  try {
+    let response = await fetch("https://gql.hashnode.com/", {
+      method: "POST",
 
-const publishBlog = async (blogDomain, inputData) => {
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        query: `
+            query Publication {
+                publication(host: "${blogDomain}") {
+                    series(slug: "${seriesSlug}") {
+                        id
+                    }
+                }
+            }
+        `,
+      }),
+    });
+
+    let responseData = await response.json();
+    return responseData.data.publication.series.id;
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+};
+
+const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
   try {
     const publicationID = await getPublicationID(blogDomain);
     inputData.input.publicationId = publicationID;
+
+    if (seriesSlug) {
+      const seriesID = await getSerieseID(blogDomain, seriesSlug);
+      inputData.input.seriesId = seriesID;
+    }
 
     let response = await fetch("https://gql.hashnode.com/", {
       method: "POST",

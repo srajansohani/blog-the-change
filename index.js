@@ -5,6 +5,7 @@ import publishBlog from "./publishBlog.js";
 
 try {
   const blogDomain = core.getInput("blog-domain");
+  const seriesSlug = core.getInput("series-slug");
   const payload = github.context.payload;
 
   summarize(payload)
@@ -17,7 +18,7 @@ try {
         },
       };
 
-      publishBlog(blogDomain, inputData);
+      publishBlog(blogDomain, inputData, seriesSlug);
     })
     .catch((error) => {
       core.setFailed(error.message);
