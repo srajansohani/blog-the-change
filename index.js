@@ -43,9 +43,14 @@ try {
     .then((content) => {
       const inputData = {
         input: {
-          title: `${payload.commits[0].message} in ${payload.repository.full_name} (${payload.commits[0].id})`,
+          title: `${payload.commits[0].message} in ${payload.repository.full_name}`,
+          subtitle: `Commit URL ${payload.compare}`,
           contentMarkdown: `${content}`,
           tags: [],
+          slug: `${payload.commits[0].message} ${payload.commits[0].id}`.replace(
+            " ",
+            "-"
+          ),
           coverImageOptions: {
             coverImageURL,
           },
