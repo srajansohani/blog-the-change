@@ -7,11 +7,11 @@ import { createApi } from "unsplash-js";
 try {
   const blogDomain = core.getInput("blog-domain");
   const seriesSlug = core.getInput("series-slug");
-  const coverImageURL = core.getInput("cover-image-url");
+  let coverImageURL = core.getInput("cover-image-url");
   const payload = github.context.payload;
 
   const unsplash = createApi({
-    accessKey: process.env.unsplash_ACCESS_KEY,
+    accessKey: process.env.UNSPLASH_ACCESS_KEY,
   });
 
   console.log("initail URL ", coverImageURL);
