@@ -1,4 +1,4 @@
-import { GitHub } from "@actions/github/lib/utils";
+
 import { Octokit } from "@octokit/rest";
 
 
