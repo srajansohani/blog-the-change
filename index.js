@@ -3,7 +3,10 @@ import github from "@actions/github";
 import { octokit } from "./octokit.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const getDiffData = async (payload) => {
+import { BASE_PROMPT} from "./constants.js"
+
+
+const getDiffData = async(payload)=>{
   const repository = payload.repository;
   const owner = repository.owner.login;
   const repo = repository.name;
@@ -21,8 +24,8 @@ const getDiffData = async (payload) => {
     head: commitSha,
   });
 
-  return commitDiff.data.files[0].patch;
-};
+  return commitDiff.data.files;
+}
 
 const getPublicationID = async (blogDomain) => {
   let response = await fetch("https://gql.hashnode.com/", {
@@ -108,15 +111,17 @@ try {
 
   getDiffData(payload)
     .then(async (result) => {
-      const jsonString = JSON.stringify(result, null, 2);
-
-      diffData = jsonString;
-      console.log(jsonString);
+      const files  = result;
+      let finalPrompt = BASE_PROMPT;
+      files.map((file)=>{
+          const message = `THE GIT DIFF OF ${file.filename} TO BE SUMMARIZED:`
+          const diff = JSON.stringify(file.patch);
+          finalPrompt = finalPrompt + message + '\n' + diff + '\n';
+      })
+      console.log(finalPrompt);
 
       const geminiAPIKey = process.env.GEMINI_API_KEY;
-      const prompt = "Write a story about a magic backpack";
-
-      const content = await getSummary(prompt, geminiAPIKey);
+      const content = await getSummary(finalPrompt, geminiAPIKey);
 
       const inputData = {
         input: {
