@@ -66,8 +66,6 @@ const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
       inputData.input.seriesId = seriesID;
     }
 
-    console.log(JSON.stringify(inputData));
-
     let response = await fetch("https://gql.hashnode.com/", {
       method: "POST",
 
@@ -94,7 +92,6 @@ const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
     });
 
     const responseData = await response.json();
-    console.log(JSON.stringify(responseData.data));
     console.log(
       `URL of the generated blog : ${responseData.data.publishPost.post.url}`
     );

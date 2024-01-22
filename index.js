@@ -14,8 +14,6 @@ try {
     accessKey: process.env.UNSPLASH_ACCESS_KEY,
   });
 
-  console.log("initail URL ", coverImageURL);
-
   let photographer = "";
 
   if (!coverImageURL) {
@@ -31,7 +29,6 @@ try {
         } else {
           const photo = result.response;
           const rnd = Math.floor(Math.random() * 19);
-          console.log("img URL ", photo.results[rnd].urls.full);
           coverImageURL = photo.results[rnd].urls.full;
           photographer = `${photo.results[rnd].user.first_name} ${photo.results[rnd].user.last_name}`;
         }
@@ -46,17 +43,12 @@ try {
           subtitle: `Commit URL ${payload.compare}`,
           contentMarkdown: `${content}`,
           tags: [],
-          slug: `${payload.commits[0].message} ${payload.commits[0].id}`.replace(
-            " ",
-            "-"
-          ),
+          slug: `${payload.commits[0].id}`,
           coverImageOptions: {
             coverImageURL,
           },
         },
       };
-
-      console.log("slug is ", inputData.input.slug);
 
       if (photographer.length) {
         inputData.input.coverImageOptions = {
