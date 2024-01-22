@@ -1,6 +1,7 @@
 import getDiffData from "./diffMetaData.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { BASE_PROMPT } from "./constants.js";
+import { BASE_PROMPT, ISSUE_PROMPT } from "./constants.js";
+import { getIssues } from "./ExtractIssue.js";
 
 const summarize = async (payload) => {
   const diffFiles = await getDiffData(payload);
@@ -11,8 +12,16 @@ const summarize = async (payload) => {
     const diffSummary = JSON.stringify(file.patch);
     prompt += message + "\n" + diffSummary + "\n";
   });
+  prompt = prompt + "\n" + ISSUE_PROMPT;
+  const issues = await getIssues(payload);
 
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  issues.map((issue,index)=>{
+      prompt  = prompt + "\n" + 
+      `Issue ${index + 1} \n title: ${issue.title} \n description: ${issue.body}`
+  })
+  console.log(prompt);
+  const geminiAPIKey =   process.env.GEMINI_API_KEY;
+  const genAI = new GoogleGenerativeAI(geminiAPIKey);
   const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
   const result = await model.generateContent(prompt);
