@@ -20,5 +20,4 @@ The following is a git diff of a every file in a single commit.
 Please summarize the changes in each file in bullet points and then generate an extensive summary of the entire commit, describing the changes made in the diff in high level.
 Do it in the following way:
 Write SUMMARY: and then write a summary of the changes in bullet points for each file after that write a complete extensive summary for the entire commit.
-`
-
+`;

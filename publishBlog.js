@@ -93,7 +93,7 @@ const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
 
     const responseData = await response.json();
     console.log(
-      `URL of the generated blog : ${responseData.data.publishPost.url}`
+      `URL of the generated blog : ${responseData.data.publishPost.post.url}`
     );
   } catch (error) {
     core.setFailed(error.message);

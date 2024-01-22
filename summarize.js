@@ -1,4 +1,4 @@
-import getDiffData from "./diffMetaData";
+import getDiffData from "./diffMetaData.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BASE_PROMPT } from "./constants.js";
 
