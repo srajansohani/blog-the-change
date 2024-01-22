@@ -1,4 +1,4 @@
-export const SHARED_PROMPT = `You are an expert programmer, and you are trying to summarize a git diff.
+export const SHARED_PROMPT = `You are an expert programmer, and you are trying to extensively summarize a git diff.
 Reminders about the git diff format:
 For every file, there are a few metadata lines, like (for example):
 \`\`\`
@@ -16,9 +16,8 @@ It is not part of the diff.
 `;
 
 export const BASE_PROMPT = `${SHARED_PROMPT}
-The following is a git diff of a single file.
-Please summarize it in a comment, describing the changes made in the diff in high level.
+The following is a git diff of a every file in a single commit.
+Please summarize the changes in each file in detail and then generate a summary of the entire commit, describing the changes made in the diff in high level.
 Do it in the following way:
-Write SUMMARY: and then write a summary of the changes made in the diff, as a bullet point list.
-Every bullet point should start with a *.
+Write SUMMARY: and then write a summary of the changes made in each file after that write a complete summary for the entire commit.
 `
