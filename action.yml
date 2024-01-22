@@ -4,7 +4,7 @@ inputs:
   blog-domain:
     description: "The domain where the blog would be posted."
     required: true
-  series-slug: 
+  series-slug:
     description: "The series in which blog blog is published."
 # outputs:
 #   time: # id of output
