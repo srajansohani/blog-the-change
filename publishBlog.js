@@ -71,7 +71,7 @@ const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
 
       headers: {
         "Content-Type": "application/json",
-        Authorization: process.env.HASHNODE_ACCESS_TOKEN,
+        Authorization: process.env.HASHNODE_ACCESS_TOKEN
       },
 
       body: JSON.stringify({
@@ -92,6 +92,7 @@ const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
     });
 
     const responseData = await response.json();
+    console.log(responseData.data);
     console.log(
       `URL of the generated blog : ${responseData.data.publishPost.post.url}`
     );

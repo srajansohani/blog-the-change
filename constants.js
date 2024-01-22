@@ -21,3 +21,7 @@ Please summarize the changes in each file in bullet points and then generate an 
 Do it in the following way:
 Write SUMMARY: and then write a summary of the changes in bullet points for each file after that write a complete extensive summary for the entire commit.
 `;
+
+export const ISSUE_PROMPT = `
+  Following is the information of the issue resolved by this changes kindly elaborate it in a seprate section called issues resolved
+`

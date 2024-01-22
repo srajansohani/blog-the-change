@@ -4,8 +4,9 @@ import summarize from "./summarize.js";
 import publishBlog from "./publishBlog.js";
 import { createApi } from "unsplash-js";
 
+
 try {
-  const blogDomain = core.getInput("blog-domain");
+  const blogDomain =  core.getInput("blog-domain");
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
   const payload = github.context.payload;
