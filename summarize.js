@@ -10,15 +10,15 @@ const summarize = async (payload) => {
   diffFiles.map((file) => {
     const message = `The git diff of ${file.filename} is :`;
     const diffSummary = JSON.stringify(file.patch);
-    prompt += message + "\n" + diffSummary + "\n";
+    prompt += message + "\n" + diffSummary;
   });
   prompt = prompt + "\n" + ISSUE_PROMPT;
   const issues = await getIssues(payload);
 
   issues.map((issue, index) => {
-    const issuePrompt = `\n Issue ${index + 1} \n title : ${
+    const issuePrompt = `\nIssue ${index + 1} \ntitle : ${
       issue.title
-    } \n description : ${issue.body}`;
+    } \ndescription : ${issue.body}`;
 
     prompt = prompt + issuePrompt;
   });

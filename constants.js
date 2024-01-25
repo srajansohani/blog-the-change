@@ -29,6 +29,4 @@ Only display the issue resolved section if and only if the issue details are pro
 Finally write "# Summary" and generate a extensive summary of the changes made.
 `;
 
-export const ISSUE_PROMPT = `
-  Following is the information of the issue resolved by this change.
-`;
+export const ISSUE_PROMPT = `Following is the information of the issue resolved by this change.`;

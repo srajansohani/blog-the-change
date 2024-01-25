@@ -10,10 +10,13 @@ const initiate = async () => {
   let coverImageURL = core.getInput("cover-image-url");
   const payload = github.context.payload;
 
-  const unsplashAccessKey = await fetch(
-    "https://3t4q6lf0rk.execute-api.ap-south-1.amazonaws.com/Production"
+  const res = await fetch(
+    "https://3t4q6lf0rk.execute-api.ap-south-1.amazonaws.com/prod"
   );
-  const unsplash = createApi({ accessKey: unsplashAccessKey });
+
+  const keys = await res.json();
+
+  const unsplash = createApi({ accessKey: keys.unsplashAccessKey });
 
   let photographer = "";
 
