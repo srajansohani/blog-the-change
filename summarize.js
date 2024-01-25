@@ -34,6 +34,7 @@ const summarize = async (payload) => {
   const result = await model.generateContent(prompt);
   const response = result.response;
   const content = response.text();
+  console.log(content);
   return content;
 };
 
