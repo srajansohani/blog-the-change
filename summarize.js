@@ -1,6 +1,10 @@
 import getDiffData from "./diffMetaData.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { BASE_PROMPT, ISSUE_PROMPT } from "./constants.js";
+import {
+  BASE_PROMPT,
+  FINAL_SUMMARY_PROMPT,
+  ISSUE_PROMPT,
+} from "./constants.js";
 import { getIssues } from "./extractIssue.js";
 
 const summarize = async (payload) => {
@@ -24,6 +28,8 @@ const summarize = async (payload) => {
     } \ndescription : ${issue.body}`;
     prompt = prompt + issuePrompt;
   });
+
+  prompt = prompt + FINAL_SUMMARY_PROMPT;
 
   console.log("Gemini prompt : ", prompt);
 
