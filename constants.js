@@ -19,7 +19,6 @@ export const BASE_PROMPT = `${INITIAL_EXPLANATION_PROMPT}
 The following is the git diff of a every file in a single commit.
 Please summarize the changes in each file and then generate an summary of the entire commit.
 Do it in the following way:
-First write "Title" the write a very short title describing the entire summary then write $% after that,
 Write "# Overview" and then write a short summary describing the changes made in the diff in high level.
 Write "# File wise changes made" and for each file,
 write "### " name of the file followed by the summary of the changes made in points. Each point must start with "- ".
@@ -39,5 +38,5 @@ export const TITLE_PROMPT = `${INITIAL_EXPLANATION_PROMPT}
 The following is the git diff of a every file in a single commit.
 Please summarize the changes in each file and then generate an summary of the entire commit.
 Do it in the following way:
-Write a very short title describing the entire summary.
+Just write a very short title describing the entire summary and nothing else.
 `;
