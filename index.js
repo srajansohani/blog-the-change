@@ -1,6 +1,6 @@
 import core from "@actions/core";
 import github from "@actions/github";
-import summarize, { getTitle } from "./summarize.js";
+import { summarize, getTitle } from "./summarize.js";
 import publishBlog from "./publishBlog.js";
 import { createApi } from "unsplash-js";
 
@@ -64,8 +64,8 @@ const initiate = async () => {
 
   const blogData = await publishBlog(blogDomain, inputData, seriesSlug);
   console.log("Blog data : ", blogData);
-  if(blogData?.error){
-    console.log('blog data error: ', blogData?.error[0]?.message);
+  if (blogData?.error) {
+    console.log("blog data error: ", blogData?.error[0]?.message);
   }
   console.log(
     `URL of the generated blog : ${blogData.data.publishPost.post.url}`
