@@ -62,6 +62,7 @@ const initiate = async () => {
   }
 
   const blogData = await publishBlog(blogDomain, inputData, seriesSlug);
+  console.log("Blog data : ", blogData);
 
   console.log(
     `URL of the generated blog : ${blogData.data.publishPost.post.url}`
