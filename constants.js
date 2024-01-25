@@ -34,3 +34,10 @@ Following is the information of the issue resolved by this change.
 export const FINAL_SUMMARY_PROMPT = `
 Finally write "# Summary" and generate a extensive summary of the changes made.
 `;
+
+export const TITLE_PROMPT = `${INITIAL_EXPLANATION_PROMPT}
+The following is the git diff of a every file in a single commit.
+Please summarize the changes in each file and then generate an summary of the entire commit.
+Do it in the following way:
+Write a very short title describing the entire summary.
+`;
