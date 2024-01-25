@@ -4,66 +4,69 @@ import summarize from "./summarize.js";
 import publishBlog from "./publishBlog.js";
 import { createApi } from "unsplash-js";
 
-try {
+const initiate = async () => {
   const blogDomain = core.getInput("blog-domain");
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
   const payload = github.context.payload;
 
-  const unsplash = createApi({
-    accessKey: process.env.UNSPLASH_ACCESS_KEY,
-  });
+  const unsplashAccessKey = await fetch(
+    "https://3t4q6lf0rk.execute-api.ap-south-1.amazonaws.com/Production"
+  );
+  const unsplash = createApi({ accessKey: unsplashAccessKey });
 
   let photographer = "";
 
   if (!coverImageURL) {
-    unsplash.search
-      .getPhotos({
-        query: "Desk laptop",
-        perPage: 20,
-        orientation: "landscape",
-      })
-      .then((result) => {
-        if (result.errors) {
-          console.log("error occurred: ", result.errors[0]);
-        } else {
-          const photo = result.response;
-          const rnd = Math.floor(Math.random() * 19);
-          coverImageURL = photo.results[rnd].urls.full;
-          photographer = `${photo.results[rnd].user.first_name} ${photo.results[rnd].user.last_name}`;
-        }
-      });
+    const result = await unsplash.search.getPhotos({
+      query: "Desk laptop",
+      perPage: 20,
+      orientation: "landscape",
+    });
+
+    if (result.errors) {
+      core.setFailed(result.errors[0]);
+    } else {
+      const photo = result.response;
+      const rnd = Math.floor(Math.random() * 19);
+      coverImageURL = photo.results[rnd].urls.full;
+      photographer = `${photo.results[rnd].user.first_name} ${photo.results[rnd].user.last_name}`;
+    }
   }
 
-  summarize(payload)
-    .then((content) => {
-      const inputData = {
-        input: {
-          title: `${payload.commits[0].message} in ${payload.repository.full_name}`,
-          subtitle: `Commit URL ${payload.compare}`,
-          contentMarkdown: `${content}`,
-          tags: [],
-          slug: `${payload.commits[0].id}`,
-          coverImageOptions: {
-            coverImageURL,
-          },
-        },
-      };
+  const content = (await summarize(payload)).split("$%");
 
-      if (photographer.length) {
-        inputData.input.coverImageOptions = {
-          coverImageURL,
-          isCoverAttributionHidden: false,
-          coverImagePhotographer: photographer,
-          coverImageAttribution: `Image was posted by ${photographer} on Unsplash`,
-        };
-      }
+  const inputData = {
+    input: {
+      title: `${content[0].split(":")[1]}`,
+      // subtitle: `Commit URL ${payload.compare}`,
+      contentMarkdown: `${content[1]}`,
+      tags: [],
+      slug: `${payload.commits[0].id}`,
+      coverImageOptions: {
+        coverImageURL,
+      },
+    },
+  };
 
-      publishBlog(blogDomain, inputData, seriesSlug);
-    })
-    .catch((error) => {
-      core.setFailed(error.message);
-    });
+  if (photographer.length) {
+    inputData.input.coverImageOptions = {
+      coverImageURL,
+      isCoverAttributionHidden: false,
+      coverImagePhotographer: photographer,
+      coverImageAttribution: `Image was posted by ${photographer} on Unsplash`,
+    };
+  }
+
+  const blogData = await publishBlog(blogDomain, inputData, seriesSlug);
+
+  console.log(
+    `URL of the generated blog : ${blogData.data.publishPost.post.url}`
+  );
+};
+
+try {
+  initiate();
 } catch (error) {
   core.setFailed(error.message);
 }
