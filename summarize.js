@@ -8,7 +8,7 @@ const summarize = async (payload) => {
   let prompt = BASE_PROMPT;
 
   diffFiles.map((file) => {
-    const message = `THE GIT DIFF OF ${file.filename} TO BE SUMMARIZED:`;
+    const message = `The git diff of ${file.filename} is :`;
     const diffSummary = JSON.stringify(file.patch);
     prompt += message + "\n" + diffSummary + "\n";
   });
@@ -16,12 +16,11 @@ const summarize = async (payload) => {
   const issues = await getIssues(payload);
 
   issues.map((issue, index) => {
-    prompt =
-      prompt +
-      "\n" +
-      `Issue ${index + 1} \n title: ${issue.title} \n description: ${
-        issue.body
-      }`;
+    const issuePrompt = `\n Issue ${index + 1} \n title : ${
+      issue.title
+    } \n description : ${issue.body}`;
+
+    prompt = prompt + issuePrompt;
   });
 
   const geminiAPIKey = process.env.GEMINI_API_KEY;
