@@ -61,7 +61,7 @@ jobs:
     name: Automatic blog generation
     steps:
       - name: Commit Blog Generator
-        uses: srajansohani/commit-blog-generator@v0.32
+        uses: srajansohani/commit-blog-generator@v0.1
         with:
           blog-domain: 'Your-Blog-Domain'
         env:
@@ -76,9 +76,9 @@ jobs:
 
 ## Encountered any bugs?
 
-    If you encounter any bugs or have any suggestions for improvements, please open an issue on the repository. Alternatively, you can contact me at my [email][srajasohani999@gmail.com].
+    If you encounter any bugs or have any suggestions for improvements, please open an issue on the repository. Alternatively, you can contact me at my [email](srajasohani999@gmail.com).
 
 ## LICENSE
 
-The Project is Under [MIT LICENSE][https://github.com/srajansohani/commit-blog-generator?tab=MIT-1-ov-file]
+The Project is Under [MIT LICENSE](https://github.com/srajansohani/commit-blog-generator?tab=MIT-1-ov-file)
 
