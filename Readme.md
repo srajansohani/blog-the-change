@@ -61,7 +61,7 @@ jobs:
     name: Automatic blog generation
     steps:
       - name: Commit Blog Generator
-        uses: srajansohani/commit-blog-generator@v0.1
+        uses: srajansohani/commit-blog-generator@v0.10
         with:
           blog-domain: 'Your-Blog-Domain'
         env:
