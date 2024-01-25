@@ -54,18 +54,6 @@ export const getTitle = async (payload) => {
     const diffSummary = JSON.stringify(file.patch);
     prompt += message + "\n" + diffSummary + "\n";
   });
-  const issues = await getIssues(payload);
-
-  if (issues.length > 0) {
-    prompt = prompt + ISSUE_PROMPT;
-  }
-
-  issues.map((issue, index) => {
-    const issuePrompt = `\nIssue ${index + 1} \ntitle : ${
-      issue.title
-    } \ndescription : ${issue.body}`;
-    prompt = prompt + issuePrompt;
-  });
 
   console.log("Gemini title prompt : ", prompt);
 
