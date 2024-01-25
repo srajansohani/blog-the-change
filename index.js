@@ -1,6 +1,6 @@
 import core from "@actions/core";
 import github from "@actions/github";
-import summarize from "./summarize.js";
+import summarize, { getTitle } from "./summarize.js";
 import publishBlog from "./publishBlog.js";
 import { createApi } from "unsplash-js";
 
@@ -37,13 +37,14 @@ const initiate = async () => {
     }
   }
 
-  const content = (await summarize(payload)).split("$%");
+  const content = await summarize(payload);
+  const title = await getTitle(payload);
 
   const inputData = {
     input: {
-      title: `${content[0].split(":")[1]}`,
+      title: `${title}`,
       // subtitle: `Commit URL ${payload.compare}`,
-      contentMarkdown: `${content[1]}`,
+      contentMarkdown: `${content}`,
       tags: [],
       slug: `${payload.commits[0].id}`,
       coverImageOptions: {
