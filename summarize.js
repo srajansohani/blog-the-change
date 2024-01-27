@@ -1,47 +1,61 @@
 import getDiffData from "./diffMetaData.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import {
-  BASE_PROMPT,
+  INITIAL_EXPLANATION_PROMPT,
+  TITLE_PROMPT,
+  OVERVIEW_PROMPT,
+  FILE_SUMMARY_PROMPT,
   FINAL_SUMMARY_PROMPT,
   ISSUE_PROMPT,
-  TITLE_PROMPT,
 } from "./constants.js";
 import { getIssues } from "./extractIssue.js";
 
-export const summarize = async (payload) => {
-  const diffFiles = await getDiffData(payload);
-  let prompt = BASE_PROMPT;
+const geminiAPIKey = process.env.GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(geminiAPIKey);
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
+export const summarize = async (payload) => {
+  let gitDiffDetails = "";
+
+  const diffFiles = await getDiffData(payload);
   diffFiles.map((file) => {
     const message = `The git diff of ${file.filename} is :`;
     const diffSummary = JSON.stringify(file.patch);
-    prompt += message + "\n" + diffSummary + "\n";
+    gitDiffDetails += message + "\n" + diffSummary + "\n";
   });
+
+  let issuesDetails = "";
+
   const issues = await getIssues(payload);
+  issues.map((issue, index) => {
+    const issuePrompt = `Issue ${index + 1} \nTitle : ${
+      issue.title
+    } \nDescription : ${issue.body}\n`;
+    issuesDetails += issuePrompt;
+  });
+
+  let content = "";
+  const sectionalPrompts = [
+    OVERVIEW_PROMPT + gitDiffDetails,
+    FILE_SUMMARY_PROMPT + gitDiffDetails,
+  ];
 
   if (issues.length > 0) {
-    prompt = prompt + ISSUE_PROMPT;
+    sectionalPrompts.push(
+      INITIAL_EXPLANATION_PROMPT + gitDiffDetails + ISSUE_PROMPT + issuesDetails
+    );
+  }
+  sectionalPrompts.push(FINAL_SUMMARY_PROMPT + gitDiffDetails);
+
+  for (let i = 0; i < sectionalPrompts.length; i++) {
+    console.log(sectionalPrompts[i], "\n\n");
+    const result = await model.generateContent(sectionalPrompts[i]);
+    const response = result.response;
+    const sectionContent = response.text();
+    content += sectionContent + "\n";
   }
 
-  issues.map((issue, index) => {
-    const issuePrompt = `\nIssue ${index + 1} \ntitle : ${
-      issue.title
-    } \ndescription : ${issue.body}`;
-    prompt = prompt + issuePrompt;
-  });
-
-  prompt = prompt + FINAL_SUMMARY_PROMPT;
-
-  console.log("Gemini summary prompt : ", prompt);
-
-  const geminiAPIKey = process.env.GEMINI_API_KEY;
-  const genAI = new GoogleGenerativeAI(geminiAPIKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
-  const result = await model.generateContent(prompt);
-  const response = result.response;
-  const content = response.text();
-  console.log(content);
+  console.log("Blog content : ", content, "\n\n");
   return content;
 };
 
@@ -55,14 +69,11 @@ export const getTitle = async (payload) => {
     prompt += message + "\n" + diffSummary + "\n";
   });
 
-  console.log("Gemini title prompt : ", prompt);
-
-  const geminiAPIKey = process.env.GEMINI_API_KEY;
-  const genAI = new GoogleGenerativeAI(geminiAPIKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  console.log("Gemini title prompt : ", prompt, "\n\n");
 
   const result = await model.generateContent(prompt);
   const response = result.response;
   const content = response.text();
+  console.log("Blog title : ", content, "\n\n");
   return content;
 };
