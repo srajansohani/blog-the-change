@@ -48,9 +48,12 @@ When you create a series on Hashnode, you can link multiple posts together, and 
 1. Go to [Hashnode](https://hashnode.com/) and click on the user icon, then hover over Personal Blog, and click on series as shown.
    ![https://ibb.co/61D1Zv8]
 
+2. Enter Series name and Series-slug and just store series slug as we will use it in our yml file and create a series corresponding to your repo name
+
+
 **Step 4: Add Workflow File in your repository**
 
-Next, you will need to add the workflow file to your repository. Create a file named `.github/workflows/gpt-commit-summarizer.yml` (relative to the git root folder) and copy the following code into it:
+Next, you will need to add the workflow file to your repository. Create a file named `.github/workflows/commit-blog-generator.yml` (relative to the git root folder) and copy the following code into it:
 
 ```yaml
 on: [push]
@@ -64,6 +67,7 @@ jobs:
         uses: srajansohani/commit-blog-generator@v0.10
         with:
           blog-domain: 'Your-Blog-Domain'
+          series-slug: 'Your-series-slug'  // Enter only if you created a series else remove this line
         env:
           HASHNODE_ACCESS_TOKEN: ${{ secrets.HASHNODE_ACCESS_TOKEN }}
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
