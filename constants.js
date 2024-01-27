@@ -56,7 +56,7 @@ Following is the information of the issues resolved by this change and remember 
 export const FINAL_SUMMARY_PROMPT = `
 ${INITIAL_EXPLANATION_PROMPT}
 Do it in the following way:
-Finally write "# Summary" and generate a extensive summary of the changes made in plain text and nothing else.
+Write "# Summary" and generate a extensive summary of the changes made in plain text (not in bullet points) and nothing else.
 The following is the git diff of a every file in a single commit.
 
 `;
