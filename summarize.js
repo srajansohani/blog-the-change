@@ -39,10 +39,13 @@ export const summarize = async (payload) => {
     OVERVIEW_PROMPT + gitDiffDetails,
     FILE_SUMMARY_PROMPT + gitDiffDetails,
   ];
-
   if (issues.length > 0) {
     sectionalPrompts.push(
-      INITIAL_EXPLANATION_PROMPT + gitDiffDetails + ISSUE_PROMPT + issuesDetails
+      INITIAL_EXPLANATION_PROMPT +
+        "The following is the git diff of a every file in a single commit." +
+        gitDiffDetails +
+        ISSUE_PROMPT +
+        issuesDetails
     );
   }
   sectionalPrompts.push(FINAL_SUMMARY_PROMPT + gitDiffDetails);
@@ -52,6 +55,7 @@ export const summarize = async (payload) => {
     const result = await model.generateContent(sectionalPrompts[i]);
     const response = result.response;
     const sectionContent = response.text();
+    console.log("Sectional content : ", sectionContent, "\n\n");
     content += sectionContent + "\n";
   }
 
