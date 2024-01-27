@@ -22,7 +22,7 @@ Additionally begin an expert programmer, we should not add any information which
 export const TITLE_PROMPT = `
 ${INITIAL_EXPLANATION_PROMPT}
 Do it in the following way:
-Just write a very short title for the blog describing the entire summary and nothing else.
+Just write a very short title in plain text for the blog describing the entire summary and nothing else.
 Only consider the chagnes given in the git diff and do not add aditional information.
 The following is the git diff of a every file in a single commit.
 
@@ -31,7 +31,7 @@ The following is the git diff of a every file in a single commit.
 export const OVERVIEW_PROMPT = `
 ${INITIAL_EXPLANATION_PROMPT}
 Do it in the following way:
-Write "# Overview" and then write a short summary describing the changes made in the diff in high level.
+Write "# Overview" and then write a short summary in plain text describing the high level changes made in the diff and nothing else.
 The following is the git diff of a every file in a single commit.
 
 `;
@@ -49,15 +49,14 @@ export const ISSUE_PROMPT = `
 Do it in the following way:
 Write "# Related issue" and for each issue provided,
 write "### " name of the issue followed by the issue description and how is it resolved in seperate paragraphs.
-Remember to only talk about the issue provided below and nothing else.
-Following is the information of the issues resolved by this change.
+Following is the information of the issues resolved by this change and remember to only talk about the issue provided below and nothing else.
 
 `;
 
 export const FINAL_SUMMARY_PROMPT = `
 ${INITIAL_EXPLANATION_PROMPT}
 Do it in the following way:
-Finally write "# Summary" and generate a extensive summary of the changes made.
+Finally write "# Summary" and generate a extensive summary of the changes made in plain text and nothing else.
 The following is the git diff of a every file in a single commit.
 
 `;

@@ -56,7 +56,7 @@ export const summarize = async (payload) => {
     const response = result.response;
     const sectionContent = response.text();
     console.log("Sectional content : ", sectionContent, "\n\n");
-    content += sectionContent + "\n";
+    content += "\n" + sectionContent + "\n";
   }
 
   console.log("Blog content : ", content, "\n\n");
