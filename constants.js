@@ -60,3 +60,15 @@ Write "# Summary" and generate a extensive summary of the changes made in plain 
 The following is the git diff of a every file in a single commit.
 
 `;
+
+export const fileTypeToSlug = {
+    "js": "javascript",
+    'yml': 'yaml',
+    'cpp': 'cpp',
+    'py': 'python',
+    'css': 'css',
+    'java': 'java',
+    'ts': 'typescript',
+    'xml': 'xml',
+    'dockerfile': 'docker',
+}

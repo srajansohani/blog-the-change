@@ -55,6 +55,36 @@ const getSerieseID = async (blogDomain, seriesSlug) => {
     core.setFailed(error.message);
   }
 };
+export const getTagDetails = async(tagSlug)=>{
+  try {
+    let response = await fetch("https://gql.hashnode.com/", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        query: `
+            query Tag {
+                tag(slug: "${tagSlug}") {
+                    id,
+                    name,
+                    slug,
+                }
+            }
+        `,
+      }),
+    });
+
+    let responseData = await response.json();
+    console.log(responseData.data.tag);
+    return responseData.data.tag;
+  }
+  catch(error){
+    core.setFailed(error.message);
+  }
+}
 
 const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
   try {
@@ -83,6 +113,9 @@ const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
               title
               subtitle
               url
+              tags{
+                name
+              }
             }
           }
         }
