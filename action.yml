@@ -6,6 +6,8 @@ inputs:
     required: true
   series-slug:
     description: "The series in which blog blog is published."
+  tags:
+    description: "Tags which you want to add to you blog."
 # outputs:
 #   time: # id of output
 #     description: "The time we greeted you"
