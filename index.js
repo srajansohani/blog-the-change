@@ -10,9 +10,10 @@ const initiate = async () => {
   const blogDomain = core.getInput("blog-domain");
   const inputTagsSlugs = core
     .getInput("tags")
-    .replace(/[]/g, "")
+    .replace(/[\[\]]/g, "")
     .trim()
     .split(",");
+  console.log(inputTagsSlugs);
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
   const payload = github.context.payload;
@@ -51,7 +52,9 @@ const initiate = async () => {
   const initialTags = [];
   for (let i = 0; i < inputTagsSlugs.length; i++) {
     const tagDetails = await getTagDetails(inputTagsSlugs[i]);
-    initialTags.push(tagDetails);
+    if (tagDetails) {
+      initialTags.push(tagDetails);
+    }
   }
 
   const content = await summarize(payload, model);
