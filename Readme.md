@@ -1,4 +1,4 @@
-<img width="1268" alt="hashnode_settings" src="https://github.com/srajansohani/commit-blog-generator/assets/99042007/17e6ab43-0b2c-4da1-b3f4-f8c2973968e7"># commit-blog-generator
+# commit-blog-generator
 
 The `commit-blog-generator` GitHub Action is a powerful tool that utilizes the capabilities of Google Gemini's large language model to produce blog summaries of the changes introduced by a commit in a repository on [Hashnode](https://hashnode.com/). By generating the git diff for each commit and each modified file and sending it to the Gemini API with a carefully crafted prompt, the action can produce and post concise and informative summaries in a blog that greatly enhance the understanding of anyone who reads it and also helps the user or owner document their work.
 
@@ -31,11 +31,18 @@ The `commit-blog-generator` GitHub Action is a powerful tool that utilizes the c
 For the action to be able to generate summaries, it will require a Gemini access key. To generate and add the access key, follow these steps:
 
 1. Go to [GEMINII AI](https://makersuite.google.com/app/apikey).
+
 2. Click on Create API key if not already created, else use the created one and click copy.
-   ![https://ibb.co/cJnYMsp]
+   ![GEMINI_API_KEY_PAGE](https://i.postimg.cc/Kz0gTq8Z/GEMINI-API.png)
+
 3. Now go to your repository page and go to Settings.
+   ![repository_page](https://i.postimg.cc/vTDRDZPH/Screenshot-2024-02-01-at-4-07-33-PM.png)
+
 4. Click on Secret and Variable dropdown and click on Actions.
+    ![secret_page](https://i.postimg.cc/kX6QvPzV/Screenshot-2024-02-01-at-4-10-10-PM.png)
+
 5. Scroll down and click on Add new repository secret.
+
 6. Add Name as `GEMINI_API_KEY` and paste the copied key in the secret section, then click Add Secret.
 
 **Step 3: Create your SubDomain on Hashnode**
@@ -46,14 +53,15 @@ You will need a domain on Hashnode where your blogs will be generated. To create
 2. Now select any subdomain name you want and click create.
 3. Now use this blog domain in the workflow file as input discussed ahead.
 
-Or, if you already have a domain, it will be visible on clicking the user icon.
+Or, if you already have a domain, it will be visible on clicking the user icon as shown below.
+![User_Icon](https://i.postimg.cc/Hn2Z5myV/Hashnode-user-icon.png)
 
 **Step 4: Create a Series for the Summary blogs of the repository (Optional)**
 
 When you create a series on Hashnode, you can link multiple posts together, and readers can navigate through the series to explore the content in a structured and sequential manner. So, it is recommended to create a separate series for the blogs generated for your repo. To create a series on Hashnode:
 
 1. Go to [Hashnode](https://hashnode.com/) and click on the user icon, then hover over Personal Blog, and click on series as shown.
-   ![https://ibb.co/61D1Zv8]
+   ![User_Icon](https://i.postimg.cc/Hn2Z5myV/Hashnode-user-icon.png)
 
 2. Enter Series name and Series-slug and just store series slug as we will use it in our yml file and create a series corresponding to your repo name
 
