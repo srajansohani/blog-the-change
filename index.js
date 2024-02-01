@@ -4,22 +4,30 @@ import { summarize, getTitle } from "./summarize.js";
 import publishBlog from "./publishBlog.js";
 import { createApi } from "unsplash-js";
 import { getTags } from "./summarize.js";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const initiate = async () => {
   const blogDomain = core.getInput("blog-domain");
+  const inputTag = core.getInput("tags");
+  console.log(inputTag, inputTag.type(), "\n\n");
+  console.log(inputTag.split("[").split("]"));
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
   const payload = github.context.payload;
+  console.log(payload, "\n\n");
 
   const res = await fetch(
-    "https://3t4q6lf0rk.execute-api.ap-south-1.amazonaws.com/prod"
+    "https://rc8xzqd0r0.execute-api.ap-south-1.amazonaws.com/prod"
   );
 
   const keys = await res.json();
 
   const unsplash = createApi({ accessKey: keys.unsplashAccessKey });
-
   let photographer = "";
+
+  const geminiAPIKey = keys.geminiAccessKey;
+  const genAI = new GoogleGenerativeAI(geminiAPIKey);
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
   if (!coverImageURL) {
     const result = await unsplash.search.getPhotos({
@@ -38,8 +46,8 @@ const initiate = async () => {
     }
   }
 
-  const content = await summarize(payload);
-  const title = await getTitle(payload);
+  const content = await summarize(payload, model);
+  const title = await getTitle(payload, model);
   const tags = await getTags(payload);
   const inputData = {
     input: {
@@ -50,10 +58,10 @@ const initiate = async () => {
       coverImageOptions: {
         coverImageURL,
       },
-      tags: tags
+      tags: tags,
     },
   };
-  
+
   if (photographer.length) {
     inputData.input.coverImageOptions = {
       coverImageURL,
