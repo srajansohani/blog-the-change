@@ -10,7 +10,7 @@ const initiate = async () => {
   const blogDomain = core.getInput("blog-domain");
   const inputTagsSlugs = core
     .getInput("tags")
-    .replace(/[\[\]]/g, "")
+    .replace(/[\[\]" "]/g, "")
     .trim()
     .split(",");
   console.log(inputTagsSlugs);
@@ -51,8 +51,9 @@ const initiate = async () => {
 
   const initialTags = [];
   for (let i = 0; i < inputTagsSlugs.length; i++) {
+    console.log();
     const tagDetails = await getTagDetails(inputTagsSlugs[i]);
-    if (tagDetails) {
+    if (tagDetails && !(tagDetails in initialTags)) {
       initialTags.push(tagDetails);
     }
   }
