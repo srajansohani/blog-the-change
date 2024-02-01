@@ -1,5 +1,4 @@
 import getDiffData from "./diffMetaData.js";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import {
   INITIAL_EXPLANATION_PROMPT,
   TITLE_PROMPT,

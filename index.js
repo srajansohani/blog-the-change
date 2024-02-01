@@ -4,6 +4,7 @@ import { summarize, getTitle } from "./summarize.js";
 import publishBlog from "./publishBlog.js";
 import { createApi } from "unsplash-js";
 import { getTags } from "./summarize.js";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const initiate = async () => {
   const blogDomain = core.getInput("blog-domain");
