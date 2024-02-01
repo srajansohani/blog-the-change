@@ -1,4 +1,4 @@
-# commit-blog-generator
+<img width="1268" alt="hashnode_settings" src="https://github.com/srajansohani/commit-blog-generator/assets/99042007/17e6ab43-0b2c-4da1-b3f4-f8c2973968e7"># commit-blog-generator
 
 The `commit-blog-generator` GitHub Action is a powerful tool that utilizes the capabilities of Google Gemini's large language model to produce blog summaries of the changes introduced by a commit in a repository on [Hashnode](https://hashnode.com/). By generating the git diff for each commit and each modified file and sending it to the Gemini API with a carefully crafted prompt, the action can produce and post concise and informative summaries in a blog that greatly enhance the understanding of anyone who reads it and also helps the user or owner document their work.
 
@@ -9,14 +9,21 @@ The `commit-blog-generator` GitHub Action is a powerful tool that utilizes the c
 **Step 1: Setup Hashnode Account and Add ACCESS KEY AS SECRET**
 
 1. Once you are registered on Hashnode, go to [Hashnode](https://hashnode.com).
+
 2. Click on the User Icon and go to Account Settings.
-   ![image setting](https://ibb.co/xCtN8Tq)
+   ![User_Icon](https://i.postimg.cc/Hn2Z5myV/Hashnode-user-icon.png)
+
 3. Click on Developer and generate a new token, then copy it.
+    ![hashnode_settings](https://i.postimg.cc/wjYJpfT3/hashnode-settings.png)
+
 4. Now go to your repository page and go to Settings.
-   ![https://ibb.co/3p37Ny9]
+   ![repository_page](https://i.postimg.cc/vTDRDZPH/Screenshot-2024-02-01-at-4-07-33-PM.png)
+
 5. Click on Secret and Variable dropdown and click on Actions.
-   ![https://ibb.co/3p37Ny9]
+   ![secret_page](https://i.postimg.cc/kX6QvPzV/Screenshot-2024-02-01-at-4-10-10-PM.png)
+
 6. Scroll down and click on Add new repository secret.
+
 7. Add Name as `HASHNODE_ACCESS_TOKEN` and paste the copied token in the secret section, then click Add Secret.
 
 **Step 2: Add GEMINI ACCESS KEY AS SECRET**
