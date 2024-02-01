@@ -13,9 +13,9 @@ The `commit-blog-generator` GitHub Action is a powerful tool that utilizes the c
    ![image setting](https://ibb.co/xCtN8Tq)
 3. Click on Developer and generate a new token, then copy it.
 4. Now go to your repository page and go to Settings.
-   ![https://ibb.co/3p37Ny9]
+   ![repository_page](https://ibb.co/3p37Ny9)
 5. Click on Secret and Variable dropdown and click on Actions.
-   ![https://ibb.co/3p37Ny9]
+   ![secret_page](https://ibb.co/3p37Ny)
 6. Scroll down and click on Add new repository secret.
 7. Add Name as `HASHNODE_ACCESS_TOKEN` and paste the copied token in the secret section, then click Add Secret.
 
