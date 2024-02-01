@@ -70,12 +70,7 @@ const initiate = async () => {
     };
   }
 
-  const blogData = await publishBlog(
-    blogDomain,
-    inputData,
-    seriesSlug,
-    publishAsDraft
-  );
+  const blogData = await publishBlog(blogDomain, inputData, seriesSlug);
   console.log("Blog data : ", blogData);
   if (blogData?.error) {
     console.log("blog data error: ", blogData?.error[0]?.message);

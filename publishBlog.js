@@ -85,12 +85,7 @@ export const getTagDetails = async (tagSlug) => {
   }
 };
 
-const publishBlog = async (
-  blogDomain,
-  inputData,
-  seriesSlug = undefined,
-  publishAsDraft = false
-) => {
+const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
   try {
     const publicationID = await getPublicationID(blogDomain);
     inputData.input.publicationId = publicationID;
