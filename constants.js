@@ -1,5 +1,5 @@
 export const INITIAL_EXPLANATION_PROMPT = `
-You are an expert programmer, and you are trying to summarize a git diff and write a blog about it.
+You are an expert programmer, and you are trying to understand a git diff
 Reminders about the git diff format:
 For every file, there are a few metadata lines, like (for example):
 \`\`\`
@@ -21,16 +21,16 @@ Additionally begin an expert programmer, we should not add any information which
 
 export const TITLE_PROMPT = `
 ${INITIAL_EXPLANATION_PROMPT}
-Do it in the following way:
-Just write a very short title in plain text for the blog describing the entire summary and nothing else.
-Only consider the chagnes given in the git diff and do not add aditional information.
+Do the following operations:
+Generate a very short title of 5 to 6 words in plain text for the blog describing the entire summary and nothing else.
+Only consider the changes given in the git diff and do not add any additional information.
 The following is the git diff of a every file in a single commit.
 
 `;
 
 export const OVERVIEW_PROMPT = `
 ${INITIAL_EXPLANATION_PROMPT}
-Do it in the following way:
+Do the following operations:
 Write "# Overview" and then write a short summary in plain text describing the high level changes made in the diff and nothing else.
 The following is the git diff of a every file in a single commit.
 
@@ -38,7 +38,7 @@ The following is the git diff of a every file in a single commit.
 
 export const FILE_SUMMARY_PROMPT = `
 ${INITIAL_EXPLANATION_PROMPT}
-Do it in the following way:
+Do the following operations:
 Write "# File wise changes made" and for each file,
 write "### " name of the file followed by the summary of the changes made in only a few points. Each point must start with "- ".
 The following is the git diff of a every file in a single commit.
@@ -46,7 +46,7 @@ The following is the git diff of a every file in a single commit.
 `;
 
 export const ISSUE_PROMPT = `
-Do it in the following way:
+Do the following operations:
 Write "# Related issue" and for each issue provided,
 write "### " name of the issue followed by the issue description and how is it resolved in seperate paragraphs.
 Following is the information of the issues resolved by this change and remember to only talk about the issue provided below and nothing else.
@@ -55,20 +55,20 @@ Following is the information of the issues resolved by this change and remember 
 
 export const FINAL_SUMMARY_PROMPT = `
 ${INITIAL_EXPLANATION_PROMPT}
-Do it in the following way:
+Do the following operations:
 Write "# Summary" and generate a extensive summary of the changes made in plain text (not in bullet points) and nothing else.
 The following is the git diff of a every file in a single commit.
 
 `;
 
 export const fileTypeToSlug = {
-    "js": "javascript",
-    'yml': 'yaml',
-    'cpp': 'cpp',
-    'py': 'python',
-    'css': 'css',
-    'java': 'java',
-    'ts': 'typescript',
-    'xml': 'xml',
-    'dockerfile': 'docker',
-}
+  js: "javascript",
+  yml: "yaml",
+  cpp: "cpp",
+  py: "python",
+  css: "css",
+  java: "java",
+  ts: "typescript",
+  xml: "xml",
+  dockerfile: "docker",
+};
