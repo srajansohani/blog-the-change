@@ -7,12 +7,45 @@ import {
   FILE_SUMMARY_PROMPT,
   FINAL_SUMMARY_PROMPT,
   ISSUE_PROMPT,
+  fileTypeToSlug,
 } from "./constants.js";
 import { getIssues } from "./extractIssue.js";
+
 
 const geminiAPIKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(geminiAPIKey);
 const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+export const getTags = async () => {
+  let tags = [];
+
+  const extractFileType = (fileName) => {
+    const lastDotIndex = fileName.lastIndexOf(".");
+    if (lastDotIndex === -1) {
+      return "";
+    }
+    return fileName.substring(lastDotIndex + 1);
+  };
+
+  const diffFiles = await getDiffData(payload);
+  for(let i = 0; i < diffFiles.length; i++) {
+    const type = extractFileType(diffFiles[i].filename)
+    if(fileTypeToSlug.hasOwnProperty(type)) {
+        const tagData = await getTagDetails(fileTypeToSlug[type]);
+        if(tagData){
+          const tag = {
+            id: tagData.id,
+            name:  tagData.name,
+            slug: tagData.slug
+          }
+          if(!(tag in tags)){
+            tags.push(tag);
+          }
+        }
+    }
+  }
+  return tags;
+};
 
 export const summarize = async (payload) => {
   let gitDiffDetails = "";

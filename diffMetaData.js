@@ -10,14 +10,16 @@ const getDiffData = async (payload) => {
     repo,
     ref: commitSha,
   });
-  const parentCommitSha = (payload.before !== "0000000000000000000000000000000000000000") ? payload.before : '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
+  const parentCommitSha = payload.before;
+  if((payload.before === "0000000000000000000000000000000000000000")){
+    return commit.data.files;
+  }
   const commitDiff = await octokit.repos.compareCommits({
     owner,
     repo,
     base: parentCommitSha,
     head: commitSha,
   });
-
   return commitDiff.data.files;
 };
 

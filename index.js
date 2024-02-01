@@ -3,6 +3,7 @@ import github from "@actions/github";
 import { summarize, getTitle } from "./summarize.js";
 import publishBlog from "./publishBlog.js";
 import { createApi } from "unsplash-js";
+import { getTags } from "./summarize.js";
 
 const initiate = async () => {
   const blogDomain = core.getInput("blog-domain");
@@ -39,20 +40,20 @@ const initiate = async () => {
 
   const content = await summarize(payload);
   const title = await getTitle(payload);
-
+  const tags = await getTags(payload);
   const inputData = {
     input: {
       title: `${title}`,
       // subtitle: `Commit URL ${payload.compare}`,
       contentMarkdown: `${content}`,
-      tags: [],
       slug: `${payload.commits[0].id}`,
       coverImageOptions: {
         coverImageURL,
       },
+      tags: tags
     },
   };
-
+  
   if (photographer.length) {
     inputData.input.coverImageOptions = {
       coverImageURL,
