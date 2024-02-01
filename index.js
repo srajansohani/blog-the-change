@@ -1,16 +1,18 @@
 import core from "@actions/core";
 import github from "@actions/github";
 import { summarize, getTitle } from "./summarize.js";
-import publishBlog from "./publishBlog.js";
+import publishBlog, { getTagDetails } from "./publishBlog.js";
 import { createApi } from "unsplash-js";
 import { getTags } from "./summarize.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const initiate = async () => {
   const blogDomain = core.getInput("blog-domain");
-  const inputTag = core.getInput("tags");
-  console.log(inputTag, typeof inputTag, "\n\n");
-  console.log(inputTag.split("[").split("]"));
+  const inputTagsSlugs = core
+    .getInput("tags")
+    .replace(/[]/g, "")
+    .trim()
+    .split(",");
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
   const payload = github.context.payload;
@@ -46,9 +48,15 @@ const initiate = async () => {
     }
   }
 
+  const initialTags = [];
+  for (let i = 0; i < inputTags.length; i++) {
+    const tagDetails = await getTagDetails(inputTagsSlugs[i]);
+    initialTags.push(tagDetails);
+  }
+
   const content = await summarize(payload, model);
   const title = await getTitle(payload, model);
-  const tags = await getTags(payload);
+  const tags = await getTags(payload, initialTags);
   const inputData = {
     input: {
       title: `${title}`,
