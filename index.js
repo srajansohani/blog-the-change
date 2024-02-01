@@ -35,7 +35,7 @@ const initiate = async () => {
   if (!coverImageURL) {
     const result = await unsplash.search.getPhotos({
       query: "Desk laptop",
-      perPage: 20,
+      perPage: 40,
       orientation: "landscape",
     });
 
@@ -43,7 +43,7 @@ const initiate = async () => {
       core.setFailed(result.errors[0]);
     } else {
       const photo = result.response;
-      const rnd = Math.floor(Math.random() * 19);
+      const rnd = Math.floor(Math.random() * 39);
       coverImageURL = photo.results[rnd].urls.full;
       photographer = `${photo.results[rnd].user.first_name} ${photo.results[rnd].user.last_name}`;
     }
