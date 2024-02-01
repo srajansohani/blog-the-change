@@ -9,8 +9,9 @@ import {
   fileTypeToSlug,
 } from "./constants.js";
 import { getIssues } from "./extractIssue.js";
+import { getTagDetails } from "./publishBlog.js";
 
-export const getTags = async () => {
+export const getTags = async (payload) => {
   let tags = [];
 
   const extractFileType = (fileName) => {
