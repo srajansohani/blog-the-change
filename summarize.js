@@ -11,11 +11,6 @@ import {
 } from "./constants.js";
 import { getIssues } from "./extractIssue.js";
 
-
-const geminiAPIKey = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(geminiAPIKey);
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
 export const getTags = async () => {
   let tags = [];
 
@@ -28,26 +23,26 @@ export const getTags = async () => {
   };
 
   const diffFiles = await getDiffData(payload);
-  for(let i = 0; i < diffFiles.length; i++) {
-    const type = extractFileType(diffFiles[i].filename)
-    if(fileTypeToSlug.hasOwnProperty(type)) {
-        const tagData = await getTagDetails(fileTypeToSlug[type]);
-        if(tagData){
-          const tag = {
-            id: tagData.id,
-            name:  tagData.name,
-            slug: tagData.slug
-          }
-          if(!(tag in tags)){
-            tags.push(tag);
-          }
+  for (let i = 0; i < diffFiles.length; i++) {
+    const type = extractFileType(diffFiles[i].filename);
+    if (fileTypeToSlug.hasOwnProperty(type)) {
+      const tagData = await getTagDetails(fileTypeToSlug[type]);
+      if (tagData) {
+        const tag = {
+          id: tagData.id,
+          name: tagData.name,
+          slug: tagData.slug,
+        };
+        if (!(tag in tags)) {
+          tags.push(tag);
         }
+      }
     }
   }
   return tags;
 };
 
-export const summarize = async (payload) => {
+export const summarize = async (payload, model) => {
   let gitDiffDetails = "";
 
   const diffFiles = await getDiffData(payload);
@@ -96,7 +91,7 @@ export const summarize = async (payload) => {
   return content;
 };
 
-export const getTitle = async (payload) => {
+export const getTitle = async (payload, model) => {
   const diffFiles = await getDiffData(payload);
   let prompt = TITLE_PROMPT;
 

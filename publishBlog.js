@@ -55,7 +55,7 @@ const getSerieseID = async (blogDomain, seriesSlug) => {
     core.setFailed(error.message);
   }
 };
-export const getTagDetails = async(tagSlug)=>{
+export const getTagDetails = async (tagSlug) => {
   try {
     let response = await fetch("https://gql.hashnode.com/", {
       method: "POST",
@@ -80,13 +80,17 @@ export const getTagDetails = async(tagSlug)=>{
     let responseData = await response.json();
     console.log(responseData.data.tag);
     return responseData.data.tag;
-  }
-  catch(error){
+  } catch (error) {
     core.setFailed(error.message);
   }
-}
+};
 
-const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
+const publishBlog = async (
+  blogDomain,
+  inputData,
+  seriesSlug = undefined,
+  publishAsDraft = false
+) => {
   try {
     const publicationID = await getPublicationID(blogDomain);
     inputData.input.publicationId = publicationID;
