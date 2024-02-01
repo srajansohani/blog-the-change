@@ -49,7 +49,7 @@ const initiate = async () => {
   }
 
   const initialTags = [];
-  for (let i = 0; i < inputTags.length; i++) {
+  for (let i = 0; i < inputTagsSlugs.length; i++) {
     const tagDetails = await getTagDetails(inputTagsSlugs[i]);
     initialTags.push(tagDetails);
   }
