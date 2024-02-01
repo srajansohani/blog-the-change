@@ -55,6 +55,7 @@ const getSerieseID = async (blogDomain, seriesSlug) => {
     core.setFailed(error.message);
   }
 };
+
 export const getTagDetails = async (tagSlug) => {
   try {
     let response = await fetch("https://gql.hashnode.com/", {

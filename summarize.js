@@ -11,9 +11,7 @@ import {
 import { getIssues } from "./extractIssue.js";
 import { getTagDetails } from "./publishBlog.js";
 
-export const getTags = async (payload) => {
-  let tags = [];
-
+export const getTags = async (payload, tags = []) => {
   const extractFileType = (fileName) => {
     const lastDotIndex = fileName.lastIndexOf(".");
     if (lastDotIndex === -1) {

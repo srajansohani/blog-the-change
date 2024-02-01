@@ -1,16 +1,19 @@
 import core from "@actions/core";
 import github from "@actions/github";
 import { summarize, getTitle } from "./summarize.js";
-import publishBlog from "./publishBlog.js";
+import publishBlog, { getTagDetails } from "./publishBlog.js";
 import { createApi } from "unsplash-js";
 import { getTags } from "./summarize.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const initiate = async () => {
   const blogDomain = core.getInput("blog-domain");
-  const inputTag = core.getInput("tags");
-  console.log(inputTag, inputTag.type(), "\n\n");
-  console.log(inputTag.split("[").split("]"));
+  const inputTagsSlugs = core
+    .getInput("tags")
+    .replace(/[\[\]" "]/g, "")
+    .trim()
+    .split(",");
+  console.log(inputTagsSlugs);
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
   const payload = github.context.payload;
@@ -32,7 +35,7 @@ const initiate = async () => {
   if (!coverImageURL) {
     const result = await unsplash.search.getPhotos({
       query: "Desk laptop",
-      perPage: 20,
+      perPage: 40,
       orientation: "landscape",
     });
 
@@ -40,15 +43,24 @@ const initiate = async () => {
       core.setFailed(result.errors[0]);
     } else {
       const photo = result.response;
-      const rnd = Math.floor(Math.random() * 19);
+      const rnd = Math.floor(Math.random() * 39);
       coverImageURL = photo.results[rnd].urls.full;
       photographer = `${photo.results[rnd].user.first_name} ${photo.results[rnd].user.last_name}`;
     }
   }
 
+  const initialTags = [];
+  for (let i = 0; i < inputTagsSlugs.length; i++) {
+    console.log();
+    const tagDetails = await getTagDetails(inputTagsSlugs[i]);
+    if (tagDetails && !(tagDetails in initialTags)) {
+      initialTags.push(tagDetails);
+    }
+  }
+
   const content = await summarize(payload, model);
   const title = await getTitle(payload, model);
-  const tags = await getTags(payload);
+  const tags = await getTags(payload, initialTags);
   const inputData = {
     input: {
       title: `${title}`,
