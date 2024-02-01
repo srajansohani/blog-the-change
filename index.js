@@ -9,7 +9,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const initiate = async () => {
   const blogDomain = core.getInput("blog-domain");
   const inputTag = core.getInput("tags");
-  console.log(inputTag, inputTag.type(), "\n\n");
+  console.log(inputTag, typeof inputTag, "\n\n");
   console.log(inputTag.split("[").split("]"));
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
