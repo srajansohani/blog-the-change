@@ -39,8 +39,7 @@ const initiate = async () => {
       core.setFailed(result.errors[0]);
     } else {
       const photos = result.response;
-      const rnd = Math.floor(Math.random() * 39);
-      console.log(photos, photos.length, rnd);
+      const rnd = Math.floor(Math.random() * 40);
       coverImageURL = photos.results[rnd].urls.full;
       photographer = `${photos.results[rnd].user.first_name} ${photos.results[rnd].user.last_name}`;
     }
