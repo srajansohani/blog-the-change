@@ -38,10 +38,10 @@ const initiate = async () => {
     if (result.errors) {
       core.setFailed(result.errors[0]);
     } else {
-      const photo = result.response;
-      const rnd = Math.floor(Math.random() * 39);
-      coverImageURL = photo.results[rnd].urls.full;
-      photographer = `${photo.results[rnd].user.first_name} ${photo.results[rnd].user.last_name}`;
+      const photos = result.response;
+      const rnd = Math.floor(Math.random() * 40);
+      coverImageURL = photos.results[rnd].urls.full;
+      photographer = `${photos.results[rnd].user.first_name} ${photos.results[rnd].user.last_name}`;
     }
   }
 
@@ -80,7 +80,7 @@ const initiate = async () => {
   console.log("Input data for the blog : ", inputData);
 
   const blogData = await publishBlog(blogDomain, inputData, seriesSlug);
-  if (blogData?.error) {
+  if (blogData.error) {
     console.log("Blog data error: ", blogData.error[0].message);
     core.setFailed(blogData.error[0].message);
   } else {

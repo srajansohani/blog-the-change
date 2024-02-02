@@ -110,7 +110,9 @@ const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
             post {
               id
               title
-              content
+              content{
+                text
+              }
               url
               tags{
                 name
