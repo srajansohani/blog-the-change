@@ -71,6 +71,8 @@ const FILE_TYPE_TO_SLUG = {
   ts: "typescript",
   xml: "xml",
   dockerfile: "docker",
+  react: 'reactjs',
+  next: 'nextjs'
 };
 
 export {

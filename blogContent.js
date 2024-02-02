@@ -10,8 +10,12 @@ import {
 } from "./constants.js";
 import { getIssues } from "./extractIssue.js";
 import { getTagDetails } from "./hashnodeAPI.js";
+import { addNextTag, addReactTag } from "./identifyAppType.js";
 
-const getTags = async (payload, tags = []) => {
+const getTags = async (payload, tags = [],addTags) => {
+  if(!addTags){
+    return tags;
+  }
   const extractFileType = (fileName) => {
     const lastDotIndex = fileName.lastIndexOf(".");
     if (lastDotIndex === -1) {
@@ -31,12 +35,15 @@ const getTags = async (payload, tags = []) => {
           name: tagData.name,
           slug: tagData.slug,
         };
-        if (!(tag in tags) && tags.length < 5) {
+        if (!(tags.some(item => (Object.keys(item).every(key => item[key] === tag[key])))) && tags.length < 5) {
           tags.push(tag);
         }
       }
     }
   }
+if(tags.length < 5) tags = addReactTag(payload,tags); 
+if(tags = addReactTag(payload,tags)) tags = addNextTag(payload,tags);
+  
   return tags;
 };
 
