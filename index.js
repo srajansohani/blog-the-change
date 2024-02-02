@@ -80,7 +80,6 @@ const initiate = async () => {
   console.log("Input data for the blog : ", inputData);
 
   const blogData = await publishBlog(blogDomain, inputData, seriesSlug);
-  console.log(blogData);
   if (blogData.error) {
     console.log("Blog data error: ", blogData.error[0].message);
     core.setFailed(blogData.error[0].message);
