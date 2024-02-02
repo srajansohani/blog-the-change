@@ -1,4 +1,7 @@
 import { octokit } from "./octokit.js";
+import { getTagDetails } from "./hashnodeAPI.js";
+import { FILE_TYPE_TO_SLUG } from "./constants.js";
+
 const getPackageJSON = async(owner,repo)=>{
     try {
         const response = await octokit.repos.getContent({
@@ -20,7 +23,7 @@ const getPackageJSON = async(owner,repo)=>{
 }
 const addReactTag = async(payload,tags)=>{
   const packageJSON = await getPackageJSON(payload.repository.owner.login,payload.repository.name);
-  if(packageJSON.hasOwnProperty('react') || packageJSON.hasOwnProperty('react-dom') ||packageJSON.hasOwnProperty('react-scripts')   ){
+  if(packageJSON?.dependencies.hasOwnProperty('react') || packageJSON?.dependencies.hasOwnProperty('react-dom') ||packageJSON?.dependencies.hasOwnProperty('react-scripts')   ){
         const tagData = await getTagDetails(FILE_TYPE_TO_SLUG['react']);
         tags.push({
           id: tagData.id,
@@ -33,7 +36,7 @@ const addReactTag = async(payload,tags)=>{
 
 const addNextTag = async(payload,tags)=>{
     const packageJSON = await getPackageJSON(payload.repository.owner.login,payload.repository.name);
-    if(packageJSON.hasOwnProperty('next')){
+    if(packageJSON?.dependencies.hasOwnProperty('next')){
         const tagData = await getTagDetails(FILE_TYPE_TO_SLUG['next']);
         tags.push({
           id: tagData.id,

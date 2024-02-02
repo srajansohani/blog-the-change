@@ -42,7 +42,7 @@ const getTags = async (payload, tags = [],addTags) => {
     }
   }
 if(tags.length < 5) tags = addReactTag(payload,tags); 
-if(tags = addReactTag(payload,tags)) tags = addNextTag(payload,tags);
+if(tags.length < 5) tags = addNextTag(payload,tags);
   
   return tags;
 };
