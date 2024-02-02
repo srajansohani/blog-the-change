@@ -1,19 +1,19 @@
 import { octokit } from "./octokit.js";
 
-function extractNumbers(inputString) {
-  var pattern = /#(\d+)/g;
-  var matches = inputString.match(pattern);
+const extractNumbers = (inputString) => {
+  let pattern = /#(\d+)/g;
+  let matches = inputString.match(pattern);
   if (matches) {
-    var numbers = matches.map(function (match) {
+    let numbers = matches.map(function (match) {
       return parseInt(match.slice(1), 10);
     });
     return numbers;
   } else {
     return [];
   }
-}
+};
 
-export const getIssues = async (payload) => {
+const getIssues = async (payload) => {
   const commitMessage = payload.head_commit.message;
   const issueNumbers = extractNumbers(commitMessage);
   const repository = payload.repository;
@@ -29,3 +29,5 @@ export const getIssues = async (payload) => {
   }
   return issues;
 };
+
+export default { getIssues };
