@@ -23,4 +23,4 @@ const getDiffData = async (payload) => {
   return commitDiff.data.files;
 };
 
-export default { getDiffData };
+export { getDiffData };

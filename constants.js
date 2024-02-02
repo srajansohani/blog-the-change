@@ -73,7 +73,7 @@ const FILE_TYPE_TO_SLUG = {
   dockerfile: "docker",
 };
 
-export default {
+export {
   INITIAL_EXPLANATION_PROMPT,
   TITLE_PROMPT,
   OVERVIEW_PROMPT,

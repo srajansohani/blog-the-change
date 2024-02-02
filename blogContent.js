@@ -102,4 +102,4 @@ const getTitle = async (payload, model) => {
   return content;
 };
 
-export default { getTags, getBlogContent, getTitle };
+export { getTags, getBlogContent, getTitle };

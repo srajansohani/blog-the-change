@@ -30,4 +30,4 @@ const getIssues = async (payload) => {
   return issues;
 };
 
-export default { getIssues };
+export { getIssues };
