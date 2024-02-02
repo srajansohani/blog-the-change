@@ -15,7 +15,7 @@ const initiate = async () => {
     .split(",");
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
-  const addTags = JSON.parse(core.getInput("add-tags").toLowerCase());
+  const addTags = (core.getInput("add-tags"));
   const total_payload = github.context.payload;
 
   const payload = {
