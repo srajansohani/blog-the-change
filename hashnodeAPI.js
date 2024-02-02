@@ -130,4 +130,4 @@ const publishBlog = async (blogDomain, inputData, seriesSlug = undefined) => {
   }
 };
 
-export default { getTagDetails, publishBlog };
+export { getTagDetails, publishBlog };
