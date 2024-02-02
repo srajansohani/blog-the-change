@@ -74,7 +74,7 @@ const initiate = async () => {
     input: {
       title: `${title}`,
       contentMarkdown: `${content}`,
-      slug: `${payload.commits[0].id}`,
+      slug: `${payload.after}`,
       coverImageOptions: {
         coverImageURL,
       },
