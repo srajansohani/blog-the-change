@@ -1,4 +1,4 @@
-import getDiffData from "./diffMetaData.js";
+import { getDiffData } from "./diffMetaData.js";
 import {
   INITIAL_EXPLANATION_PROMPT,
   TITLE_PROMPT,
@@ -6,12 +6,12 @@ import {
   FILE_SUMMARY_PROMPT,
   FINAL_SUMMARY_PROMPT,
   ISSUE_PROMPT,
-  fileTypeToSlug,
+  FILE_TYPE_TO_SLUG,
 } from "./constants.js";
 import { getIssues } from "./extractIssue.js";
-import { getTagDetails } from "./publishBlog.js";
+import { getTagDetails } from "./hashnodeAPI.js";
 
-export const getTags = async (payload, tags = []) => {
+const getTags = async (payload, tags = []) => {
   const extractFileType = (fileName) => {
     const lastDotIndex = fileName.lastIndexOf(".");
     if (lastDotIndex === -1) {
@@ -23,15 +23,15 @@ export const getTags = async (payload, tags = []) => {
   const diffFiles = await getDiffData(payload);
   for (let i = 0; i < diffFiles.length; i++) {
     const type = extractFileType(diffFiles[i].filename);
-    if (fileTypeToSlug.hasOwnProperty(type)) {
-      const tagData = await getTagDetails(fileTypeToSlug[type]);
+    if (FILE_TYPE_TO_SLUG.hasOwnProperty(type)) {
+      const tagData = await getTagDetails(FILE_TYPE_TO_SLUG[type]);
       if (tagData) {
         const tag = {
           id: tagData.id,
           name: tagData.name,
           slug: tagData.slug,
         };
-        if (!(tag in tags)) {
+        if (!(tag in tags) && tags.length < 5) {
           tags.push(tag);
         }
       }
@@ -40,7 +40,7 @@ export const getTags = async (payload, tags = []) => {
   return tags;
 };
 
-export const summarize = async (payload, model) => {
+const getBlogContent = async (payload, model) => {
   let gitDiffDetails = "";
 
   const diffFiles = await getDiffData(payload);
@@ -77,19 +77,16 @@ export const summarize = async (payload, model) => {
   sectionalPrompts.push(FINAL_SUMMARY_PROMPT + gitDiffDetails);
 
   for (let i = 0; i < sectionalPrompts.length; i++) {
-    console.log(sectionalPrompts[i], "\n\n");
     const result = await model.generateContent(sectionalPrompts[i]);
     const response = result.response;
     const sectionContent = response.text();
-    console.log("Sectional content : ", sectionContent, "\n\n");
     content += "\n" + sectionContent + "\n";
   }
 
-  console.log("Blog content : ", content, "\n\n");
   return content;
 };
 
-export const getTitle = async (payload, model) => {
+const getTitle = async (payload, model) => {
   const diffFiles = await getDiffData(payload);
   let prompt = TITLE_PROMPT;
 
@@ -99,11 +96,10 @@ export const getTitle = async (payload, model) => {
     prompt += message + "\n" + diffSummary + "\n";
   });
 
-  console.log("Gemini title prompt : ", prompt, "\n\n");
-
   const result = await model.generateContent(prompt);
   const response = result.response;
   const content = response.text();
-  console.log("Blog title : ", content, "\n\n");
   return content;
 };
+
+export default { getTags, getBlogContent, getTitle };
