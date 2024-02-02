@@ -15,7 +15,20 @@ const initiate = async () => {
     .split(",");
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
-  const payload = github.context.payload;
+  const addTags = (core.getInput("add-tags"));
+  const total_payload = github.context.payload;
+
+  const payload = {
+      after: total_payload.after,
+      before: total_payload.before,
+      repository: {
+        name: total_payload.repository.name,
+        owner: {
+          login: total_payload.repository.owner.login
+        }
+      },
+      head_commit: total_payload.head_commit
+  }
 
   const keyData = await fetch(
     "https://rc8xzqd0r0.execute-api.ap-south-1.amazonaws.com/prod"
@@ -39,28 +52,29 @@ const initiate = async () => {
       core.setFailed(result.errors[0]);
     } else {
       const photos = result.response;
-      const rnd = Math.floor(Math.random() * 40);
+      const rnd = Math.floor(Math.random() * 30);
+      coverImageURL = photos.results[rnd].urls.full;
       coverImageURL = photos.results[rnd].urls.full;
       photographer = `${photos.results[rnd].user.first_name} ${photos.results[rnd].user.last_name}`;
     }
   }
 
   const initialTags = [];
-  for (let i = 0; i < inputTagsSlugs.length; i++) {
-    const tagDetails = await getTagDetails(inputTagsSlugs[i]);
-    if (tagDetails && !(tagDetails in initialTags) && initialTags.length < 5) {
-      initialTags.push(tagDetails);
-    }
+    for (let i = 0; i < inputTagsSlugs.length; i++) {
+        const tagDetails = await getTagDetails(inputTagsSlugs[i]);
+        if (tagDetails && !(initialTags.some(item => (Object.keys(item).every(key => item[key] === tagDetails[key])))) && initialTags.length < 5) {
+          initialTags.push(tagDetails);
+        }
   }
+  const tags = await getTags(payload,initialTags,addTags);
 
   const content = await getBlogContent(payload, model);
   const title = await getTitle(payload, model);
-  const tags = await getTags(payload, initialTags);
   const inputData = {
     input: {
       title: `${title}`,
       contentMarkdown: `${content}`,
-      slug: `${payload.commits[0].id}`,
+      slug: `${payload.after}`,
       coverImageOptions: {
         coverImageURL,
       },

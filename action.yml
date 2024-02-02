@@ -6,6 +6,9 @@ inputs:
     required: true
   series-slug:
     description: "The series in which you want to add your blog to."
+  add_tags:
+    description: 'Whether to Custom generated add tags to the blog post or not.'
+    default: false
   tags:
     description: "Upto 5 tags slugs which you want to add to your blog."
 # outputs:
