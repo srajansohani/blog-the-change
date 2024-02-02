@@ -40,6 +40,10 @@ const initiate = async () => {
     } else {
       const photos = result.response;
       const rnd = Math.floor(Math.random() * 40);
+      console.log(photos);
+      console.log('photoresults: ',photos.results[rnd]);
+      console.log('urls: ',photos.results[rnd].urls)
+      coverImageURL = photos.results[rnd].urls.full;
       coverImageURL = photos.results[rnd].urls.full;
       photographer = `${photos.results[rnd].user.first_name} ${photos.results[rnd].user.last_name}`;
     }
