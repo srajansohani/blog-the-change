@@ -26,26 +26,8 @@ The `commit-blog-generator` GitHub Action is a powerful tool that utilizes the c
 
 7. Add Name as `HASHNODE_ACCESS_TOKEN` and paste the copied token in the secret section, then click Add Secret.
 
-**Step 2: Add GEMINI ACCESS KEY AS SECRET**
 
-For the action to be able to generate summaries, it will require a Gemini access key. To generate and add the access key, follow these steps:
-
-1. Go to [GEMINII AI](https://makersuite.google.com/app/apikey).
-
-2. Click on Create API key if not already created, else use the created one and click copy.
-   ![GEMINI_API_KEY_PAGE](https://i.postimg.cc/Kz0gTq8Z/GEMINI-API.png)
-
-3. Now go to your repository page and go to Settings.
-   ![repository_page](https://i.postimg.cc/vTDRDZPH/Screenshot-2024-02-01-at-4-07-33-PM.png)
-
-4. Click on Secret and Variable dropdown and click on Actions.
-    ![secret_page](https://i.postimg.cc/kX6QvPzV/Screenshot-2024-02-01-at-4-10-10-PM.png)
-
-5. Scroll down and click on Add new repository secret.
-
-6. Add Name as `GEMINI_API_KEY` and paste the copied key in the secret section, then click Add Secret.
-
-**Step 3: Create your SubDomain on Hashnode**
+**Step 2: Create your SubDomain on Hashnode**
 
 You will need a domain on Hashnode where your blogs will be generated. To create a domain on Hashnode, follow these steps:
 
@@ -66,7 +48,7 @@ When you create a series on Hashnode, you can link multiple posts together, and 
 2. Enter Series name and Series-slug and just store series slug as we will use it in our yml file and create a series corresponding to your repo name
 
 
-**Step 4: Add Workflow File in your repository**
+**Step 3: Add Workflow File in your repository**
 
 Next, you will need to add the workflow file to your repository. Create a file named `.github/workflows/commit-blog-generator.yml` (relative to the git root folder) and copy the following code into it:
 
@@ -79,14 +61,13 @@ jobs:
     name: Automatic blog generation
     steps:
       - name: Commit Blog Generator
-        uses: srajansohani/commit-blog-generator@v0.10
+        uses: srajansohani/commit-blog-generator@v0.19
         with:
           blog-domain: 'Your-Blog-Domain'
           series-slug: 'Your-series-slug'  // Enter only if you created a series else remove this line
         env:
           HASHNODE_ACCESS_TOKEN: ${{ secrets.HASHNODE_ACCESS_TOKEN }}
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 ```
 
  This workflow file tells GitHub to run the action whenever a new Commit is pushed on the repo or a pr is merged.
