@@ -1,4 +1,4 @@
-name: "HashBlog"
+name: "hashblog"
 description: "Generate an automated hashnode blog for every commit!"
 inputs:
   blog-domain:
