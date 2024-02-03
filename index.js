@@ -15,20 +15,20 @@ const initiate = async () => {
     .split(",");
   const seriesSlug = core.getInput("series-slug");
   let coverImageURL = core.getInput("cover-image-url");
-  const addTags = (core.getInput("add-tags"));
+  const addTags = core.getInput("add-tags");
   const total_payload = github.context.payload;
 
   const payload = {
-      after: total_payload.after,
-      before: total_payload.before,
-      repository: {
-        name: total_payload.repository.name,
-        owner: {
-          login: total_payload.repository.owner.login
-        }
+    after: total_payload.after,
+    before: total_payload.before,
+    repository: {
+      name: total_payload.repository.name,
+      owner: {
+        login: total_payload.repository.owner.login,
       },
-      head_commit: total_payload.head_commit
-  }
+    },
+    head_commit: total_payload.head_commit,
+  };
 
   const keyData = await fetch(
     "https://rc8xzqd0r0.execute-api.ap-south-1.amazonaws.com/prod"
@@ -60,13 +60,19 @@ const initiate = async () => {
   }
 
   const initialTags = [];
-    for (let i = 0; i < inputTagsSlugs.length; i++) {
-        const tagDetails = await getTagDetails(inputTagsSlugs[i]);
-        if (tagDetails && !(initialTags.some(item => (Object.keys(item).every(key => item[key] === tagDetails[key])))) && initialTags.length < 5) {
-          initialTags.push(tagDetails);
-        }
+  for (let i = 0; i < inputTagsSlugs.length; i++) {
+    const tagDetails = await getTagDetails(inputTagsSlugs[i]);
+    if (
+      tagDetails &&
+      !initialTags.some((item) =>
+        Object.keys(item).every((key) => item[key] === tagDetails[key])
+      ) &&
+      initialTags.length < 5
+    ) {
+      initialTags.push(tagDetails);
+    }
   }
-  const tags = await getTags(payload,initialTags,addTags);
+  const tags = await getTags(payload, initialTags, addTags);
 
   const content = await getBlogContent(payload, model);
   const title = await getTitle(payload, model);
@@ -90,8 +96,6 @@ const initiate = async () => {
       coverImageAttribution: `Image was posted by ${photographer} on Unsplash`,
     };
   }
-
-  console.log("Input data for the blog : ", inputData);
 
   const blogData = await publishBlog(blogDomain, inputData, seriesSlug);
   if (blogData.error) {
