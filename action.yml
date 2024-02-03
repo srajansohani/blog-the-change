@@ -11,6 +11,8 @@ inputs:
     default: false
   tags:
     description: "Upto 5 tags slugs which you want to add to your blog."
+  cover-image-url:
+    description: "The cover image url for the cover image you want to set in your blogs"
 # outputs:
 #   time: # id of output
 #     description: "The time we greeted you"
