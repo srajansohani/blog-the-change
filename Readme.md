@@ -79,7 +79,9 @@ jobs:
 
 
 **Step 5: Adding Customizations**
+
 You can Add Some customiztions for the blog like cover image,series and tags. You can also use our auto tagging feature by adding add_tags as true in the yml file. This makes action automatically add tags based on file changes.
+
 
 ```yaml
 on: [push]
